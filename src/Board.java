@@ -36,12 +36,4 @@ public class Board {
     public void setGlobal_temp(float global_temp) {
         this.global_temp = global_temp;
     }
-
-    public Patch[][] getPatches() {
-        return patches;
-    }
-
-    public void setPatches(Patch[][] patches) {
-        this.patches = patches;
-    }
 }

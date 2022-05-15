@@ -1,20 +1,28 @@
 /**
 * Parameters that influence the behaviour of the system.
-*
 * */
 
 public class Params {
     public enum DAISY_COLOUR { black, white }
 
-    public final static int INI_PER_WHITE = 1;
-    public final static int INI_PER_BLACK = 1;
+    // the initial percentage of white and black daisies(sum should not be bigger than 1)
+    public final static double INI_PER_WHITE = 1;
+    public final static double INI_PER_BLACK = 1;
 
-    public final static int MAX_AGE = 1;
+    // the life expectancy of a daisy
+    public final static int MAX_AGE = 10;
 
-    public final static float ALBEDO_WHITE = 1;
-    public final static float ALBEDO_BLACK = 1;
+    // the albedo of white and black daisies
+    public final static double ALBEDO_WHITE = 0.75;
+    public final static double ALBEDO_BLACK = 0.25;
 
-    public final static int ALBEDO_SURFACE = 1;
+    // the amount of heat absorbed by an empty patch.
+    public final static double ALBEDO_SURFACE = 0.4;
 
-    public final static float INI_LUMINOSITY = 1;
+    // the average solar luminosity of our sun
+    public final static double SOLAR_LUMINOSITY = 0.8;
+
+    // the percentage of diffusion
+    public final static double DIFFUSION = 0.5;
+
 }
