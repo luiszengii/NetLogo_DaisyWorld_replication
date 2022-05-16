@@ -19,14 +19,41 @@ public class Board {
         this.patches = patches;
     }
 
-    public void update_global_temp(){
-        //TODO: calculate based on daisies in all patches
+    public void update_global_temp() {
+
+        // sum up the temperature of all patches
+        float sum = 0;
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                sum += patches[i][j].temp;
+            }
+        }
+
+        // divide sum by total number of patches for average temperature
+        this.global_temp = sum / (height * width);
     }
 
-    public List<Patch> get_neighbours(int x, int y){
-        //TODO: return all neighbors around the given coors
-        //consider the edge patches
-        return new ArrayList<Patch>();
+    public List<Patch> get_neighbours(int x, int y) {
+
+        ArrayList<Patch> neighbours = new ArrayList<Patch>();
+
+        // find possible neighbours for given coordinate
+        for (int i = y - 1; i <= y + 1; i++) {
+            for (int j = x - 1; j <= x + 1; j++) {
+
+                // check if patch exist
+                if (i < height && i >= 0 && j < width && j >= 0) {
+
+                    // avoid duplicate of given coordinate
+                    if (i != y || j != x) {
+
+                        neighbours.add(patches[i][j]);
+                    }
+                }
+            }
+        }
+
+        return neighbours;
     }
 
     public float getGlobal_temp() {
