@@ -1,39 +1,87 @@
 import java.util.List;
 import java.util.ArrayList;
 
-public class Board {
-    private float global_temp;
-    private int width;
-    private int height;
-    private Patch[][] patches;
 
-    public Board(float global_temp, int width, int height, Patch[][] patches) {
-        this.global_temp = global_temp;
+/**
+* The Board class contains a 2D grid of Patches.
+* Patches on the Board affect each other's temperature, which also depends on
+ * the daisy on each patch.
+* After each 'tick', the Board would update the global temperature and
+* */
+public class Board {
+    private float globalTemp;
+    private final int width;
+    private final int height;
+    private final Patch[][] patches;
+
+    public Board(float globalTemp, int width, int height, Patch[][] patches) {
+        this.globalTemp = globalTemp;
         this.width = width;
         this.height = height;
         this.patches = patches;
     }
 
-    public Board(float global_temp, Patch[][] patches) {
-        this.global_temp = global_temp;
-        this.patches = patches;
+
+
+    /**
+     * one tick operations on the board:
+     * 1. update each patch's temperature
+     * 2. each patch diffuse heat update temperature again
+     * 3. check the daisy survivability on patches(seeding)
+     * 4. update the global temperature
+     *
+     * **/
+    public void updateBoard() {
+
+        // 1. update temp
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++){
+                this.patches[i][j].updateTemp();
+            }
+        }
+
+        // 2. diffuse
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++){
+                Patch curPatch = this.patches[i][j];
+                curPatch.receiveDiffusion(this.getNeighbours(i,j));
+            }
+        }
+
+        // 3. update survivability
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++){
+                Patch curPatch = this.patches[i][j];
+                curPatch.checkSurvivability(this.getNeighbours(i,j));
+            }
+        }
+
+        // 4. update global temp
+        this.updateGlobalTemp();
+
     }
 
-    public void update_global_temp() {
-
-        // sum up the temperature of all patches
+    /**
+     * This method sum up the temperature of all patches
+     * and divide sum by total number of patches for average temperature
+     * to update the new global temperature
+     * (should be called after all patch update temperature)
+     * **/
+    public void updateGlobalTemp() {
         float sum = 0;
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 sum += patches[i][j].temp;
             }
         }
-
-        // divide sum by total number of patches for average temperature
-        this.global_temp = sum / (height * width);
+        this.globalTemp = sum / (height * width);
     }
 
-    public List<Patch> get_neighbours(int x, int y) {
+    /**
+     * getNeighbours returns a list of all patches that are next to
+     * the given coordinate
+     * **/
+    public List<Patch> getNeighbours(int x, int y) {
 
         ArrayList<Patch> neighbours = new ArrayList<Patch>();
 
@@ -54,13 +102,5 @@ public class Board {
         }
 
         return neighbours;
-    }
-
-    public float getGlobal_temp() {
-        return global_temp;
-    }
-
-    public void setGlobal_temp(float global_temp) {
-        this.global_temp = global_temp;
     }
 }

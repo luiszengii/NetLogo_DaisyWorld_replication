@@ -1,5 +1,6 @@
 /**
- * white daisies have a high albedo(reflect heat), and black has low(absorb heat)
+ * white daisies have a high albedo(reflect heat),
+ * and black has low(absorb heat)
  * if the temperature is too high or low daisy dies
  * the daisy die of old age as well
 * */
@@ -13,11 +14,11 @@ public class Daisy {
         this.age = 0;//random initial age
     }
 
-    public boolean is_dead(){
+    public boolean isDead(){
         return this.age >= Params.MAX_AGE;
     }
 
-    public double get_albedo() {
+    public double getAlbedo() {
         if (this.colour == Params.DAISY_COLOUR.black) {
             return Params.ALBEDO_BLACK;
         } else {

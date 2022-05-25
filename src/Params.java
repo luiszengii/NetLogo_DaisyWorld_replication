@@ -5,7 +5,8 @@
 public class Params {
     public enum DAISY_COLOUR { black, white }
 
-    // the initial percentage of white and black daisies(sum should not be bigger than 1)
+    // the initial percentage of white and black daisies
+    // (sum should not be bigger than 1)
     public final static double INI_PER_WHITE = 1;
     public final static double INI_PER_BLACK = 1;
 
