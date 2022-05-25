@@ -89,7 +89,30 @@ public class Patch {
     }
 
     public void update_local_temp(){
-        //TODO: updates this.temp by calculation(daisy's albedo)
 
+        double absorbedLuminosity = 0;
+        double localHeating = 0;
+
+        // calulate absorbed-luminosity
+        if (this.daisy != null) {
+
+            // daisy exist on the patch
+            absorbedLuminosity = ((1 - this.daisy.get_albedo()) * Params.SOLAR_LUMINOSITY);
+        }else {
+
+            // no daisy exist
+            absorbedLuminosity = ((1 - Params.ALBEDO_SURFACE) * Params.SOLAR_LUMINOSITY);
+        }
+
+        // calulate local heating
+        if (absorbedLuminosity > 0) {
+            
+            localHeating = 75 * Math.log(absorbedLuminosity) + 80;
+        }else {
+            localHeating = 80;
+        }
+
+        // update local temperature
+        this.temp = ((this.temp + localHeating) / 2);
     }
 }
