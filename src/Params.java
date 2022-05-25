@@ -3,12 +3,13 @@
 * */
 
 public class Params {
-    public enum DAISY_COLOUR { black, white }
+    public enum DAISY_COLOUR { black, white, grey }
 
     // the initial percentage of white and black daisies
     // (sum should not be bigger than 1)
     public final static double INI_PER_WHITE = 1;
     public final static double INI_PER_BLACK = 1;
+    public final static double INI_PER_GREY = 1;
 
     // the life expectancy of a daisy
     public final static int MAX_AGE = 10;
@@ -16,6 +17,7 @@ public class Params {
     // the albedo of white and black daisies
     public final static double ALBEDO_WHITE = 0.75;
     public final static double ALBEDO_BLACK = 0.25;
+    public final static double ALBEDO_GREY = 0.5;
 
     // the amount of heat absorbed by an empty patch.
     public final static double ALBEDO_SURFACE = 0.4;

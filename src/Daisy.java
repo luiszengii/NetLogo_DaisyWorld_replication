@@ -11,7 +11,7 @@ public class Daisy {
 
     public Daisy(Params.DAISY_COLOUR colour) {
         this.colour = colour;
-        this.age = 0;//random initial age
+        this.age = 0; // random initial age
     }
 
     public boolean isDead(){
@@ -19,10 +19,16 @@ public class Daisy {
     }
 
     public double getAlbedo() {
-        if (this.colour == Params.DAISY_COLOUR.black) {
-            return Params.ALBEDO_BLACK;
-        } else {
-            return Params.ALBEDO_WHITE;
+        switch (this.colour) {
+            case black:
+                return Params.ALBEDO_BLACK;
+            case white:
+                return Params.ALBEDO_WHITE;
+            case grey:
+                return Params.ALBEDO_GREY;
+            default:
+                System.err.println("Daisy color is invalid.");
+                return -1;
         }
     }
 }
