@@ -4,5 +4,4 @@ public class Main {
         System.out.printf("test from main");
     }
 
-
 }
