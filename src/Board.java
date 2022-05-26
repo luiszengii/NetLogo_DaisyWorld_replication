@@ -92,7 +92,7 @@ public class Board {
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++){
                 Patch curPatch = this.patches[j][i];
-                curPatch.receiveDiffusion(this.getNeighbours(i,j));
+                curPatch.diffuse(this.getNeighbours(i,j));
             }
         }
 
@@ -121,7 +121,7 @@ public class Board {
         float sum = 0;
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                sum += patches[j][i].temp;
+                sum += patches[i][j].temp;
             }
         }
         this.globalTemp = sum / (height * width);

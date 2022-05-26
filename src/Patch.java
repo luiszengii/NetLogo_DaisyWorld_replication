@@ -69,7 +69,7 @@ public class Patch {
         // set the temperature to be the average of
         // the current temperature and the local-heating effect
         this.temp = (this.temp + localHeating) / 2;
-        System.out.println(this.temp);
+        // System.out.println(this.temp);
     }
 
     /**
@@ -77,23 +77,20 @@ public class Patch {
      * and returns the energy diffused to neighbour
      * the diffusion rate in defined in Params.java
      * **/
-    public double diffuse() {
+    public void diffuse(List<Patch> neighbours) {
         double oldTemp = this.temp;
         this.temp *= (1 - Params.DIFFUSION);
-        return (oldTemp * Params.DIFFUSION) / 8;
+
+        for (Patch p : neighbours) {
+            p.temp += (oldTemp * Params.DIFFUSION) / 8;
+        }
     }
 
     /**
     * receiveDiffusion takes a list of neighbours, and calculate each
      * neighbours' diffusion, then update its temperature
     * */
-    public void receiveDiffusion(List<Patch> neighbours) {
-        double totalDiffusion = 0;
-        for (Patch p : neighbours) {
-            totalDiffusion += p.diffuse();
-        }
-        this.temp += totalDiffusion;
-    }
+
 
     /**
      * checkSurvivability() updates the occupancy of the patch
