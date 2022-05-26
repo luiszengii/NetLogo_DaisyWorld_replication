@@ -23,18 +23,31 @@ public class Patch {
     protected double temp;
 
 
-    public Patch(Daisy daisy, double temperature) {
-        this.daisy = daisy;
-        this.temp = temperature;
+    /**
+     * the patch by default has no daisy
+     * the initial temperature on the patch is 0
+     * */
+    public Patch() {
+        this.daisy = null;
+        this.temp = 0;
     }
 
+    // a daisy could be passed in when initializing the board
+    public Patch(Daisy daisy) {
+        this.daisy = daisy;
+        this.temp = 0;
+    }
+
+
     /**
-     * receives heat diffusion from neighbors(calculated in Board.java)
-     * then calculate local heat updates with
+     * updateTemp() add the local heating to local temperature
+     * by calculating the absorbed luminosity based on local daisy's albedo
+     * of the patch's surface albedo if is empty
      * **/
     public void updateTemp(){
         double absorbedLuminosity;
         double localHeating;
+
         if(daisy == null){
             // the percentage of absorbed energy is calculated
             // with (1 - albedo-of-surface) * solar-luminosity
@@ -56,14 +69,18 @@ public class Patch {
         // set the temperature to be the average of
         // the current temperature and the local-heating effect
         this.temp = (this.temp + localHeating) / 2;
+        System.out.println(this.temp);
     }
 
     /**
-     * returns the energy diffuse to neighbour
+     * diffuse() decrease the local heat
+     * and returns the energy diffused to neighbour
      * the diffusion rate in defined in Params.java
      * **/
-    public double calculateDiffusion() {
-        return (this.temp * Params.DIFFUSION) / 8;
+    public double diffuse() {
+        double oldTemp = this.temp;
+        this.temp *= (1 - Params.DIFFUSION);
+        return (oldTemp * Params.DIFFUSION) / 8;
     }
 
     /**
@@ -73,14 +90,13 @@ public class Patch {
     public void receiveDiffusion(List<Patch> neighbours) {
         double totalDiffusion = 0;
         for (Patch p : neighbours) {
-            totalDiffusion += p.calculateDiffusion();
+            totalDiffusion += p.diffuse();
         }
         this.temp += totalDiffusion;
     }
 
-
     /**
-     * updates the occupancy of the patch
+     * checkSurvivability() updates the occupancy of the patch
      * if the daisy is dead, set the patch open
      * if not, daisy grows older, check again if dead
      * then calculate the probability of
@@ -92,11 +108,11 @@ public class Patch {
             if (this.daisy.isDead()){
                 this.daisy = null;
             } else {
-                //the possibility of seeding
+                // calculate the possibility of seeding
                 double seedThreshold = 0.1457 * this.temp - 0.0032
                         * Math.pow(this.temp, 2) - 0.6443;
 
-                //check if any neighbour is empty
+                // check if any neighbour is empty
                 List<Patch> openNeighbours = new ArrayList<>();
                 for(Patch neighbour : neighbours){
                     if(neighbour.daisy == null){
@@ -104,42 +120,14 @@ public class Patch {
                     }
                 }
 
-                //choose one open neighbour randomly and sprout the daisy
+                // choose one open neighbour randomly and sprout a new daisy
                 double possibility = Math.random();
                 if(!openNeighbours.isEmpty() && possibility < seedThreshold){
                     int index = (int)(Math.random() * openNeighbours.size());
                     openNeighbours.get(index).daisy =
-                            new Daisy(this.daisy.colour);
+                            new Daisy(this.daisy.colour, 0);
                 }
             }
         }
-    }
-
-    public void update_local_temp(){
-
-        double absorbedLuminosity = 0;
-        double localHeating = 0;
-
-        // calulate absorbed-luminosity
-        if (this.daisy != null) {
-
-            // daisy exist on the patch
-            absorbedLuminosity = ((1 - this.daisy.getAlbedo()) * Params.SOLAR_LUMINOSITY);
-        }else {
-
-            // no daisy exist
-            absorbedLuminosity = ((1 - Params.ALBEDO_SURFACE) * Params.SOLAR_LUMINOSITY);
-        }
-
-        // calulate local heating
-        if (absorbedLuminosity > 0) {
-            
-            localHeating = 75 * Math.log(absorbedLuminosity) + 80;
-        }else {
-            localHeating = 80;
-        }
-
-        // update local temperature
-        this.temp = ((this.temp + localHeating) / 2);
     }
 }

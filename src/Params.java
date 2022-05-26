@@ -7,12 +7,12 @@ public class Params {
 
     // the initial percentage of white and black daisies
     // (sum should not be bigger than 1)
-    public final static double INI_PER_WHITE = 1;
-    public final static double INI_PER_BLACK = 1;
-    public final static double INI_PER_GREY = 1;
+    public final static double INI_PER_WHITE = 0.2;
+    public final static double INI_PER_BLACK = 0.2;
+    public final static double INI_PER_GREY = 0.2;
 
     // the life expectancy of a daisy
-    public final static int MAX_AGE = 10;
+    public final static int MAX_AGE = 25;
 
     // the albedo of white and black daisies
     public final static double ALBEDO_WHITE = 0.75;
