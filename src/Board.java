@@ -21,10 +21,10 @@ public class Board {
      * The Board has a width and a height
      * The initial global temperature is 0
      * */
-    public Board(int width, int height) {
+    public Board() {
         this.globalTemp = 0;
-        this.width = width;
-        this.height = height;
+        this.width = Params.BOARD_WIDTH;
+        this.height = Params.BOARD_HEIGHT;
         this.patches = new Patch[height][width];
         this.tickCount = 0;
     }
@@ -41,20 +41,19 @@ public class Board {
                 double prob = Math.random();
                 //if the prob is smaller than initial percentage of white
                 // then seed white daisy on the patch
-                if(prob < Params.INI_PER_WHITE){
+                if(prob <= Params.INI_PER_WHITE){
                     Daisy whiteDaisy = new Daisy(Params.DAISY_COLOUR.white);
                     patches[j][i] = new Patch(whiteDaisy);
                 }
                 // if the prob is larger than (1-percentage of black) seed black
-                else if (prob > (1 - Params.INI_PER_BLACK)){
+                else if (prob <= (Params.INI_PER_WHITE + Params.INI_PER_BLACK)
+                    && prob > Params.INI_PER_WHITE){
                     Daisy blackDaisy = new Daisy(Params.DAISY_COLOUR.black);
                     patches[j][i] = new Patch(blackDaisy);
                 }
                 // (extended)
-                // if the prob is within the range of percentage of white and
-                // the white + grey, then seed grey
-                else if (prob > Params.INI_PER_WHITE
-                        && prob < (Params.INI_PER_WHITE + Params.INI_PER_GREY)){
+                // if the prob is within the range of percentage of grey
+                else if (prob <= (Params.INI_PER_WHITE + Params.INI_PER_BLACK + Params.INI_PER_GREY)){
                     Daisy geryDaisy = new Daisy(Params.DAISY_COLOUR.grey);
                     patches[j][i] = new Patch(geryDaisy);
                 }
@@ -66,7 +65,12 @@ public class Board {
         }
 
         // updates all temperatures after first init
-        this.updateBoard();
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++){
+                this.patches[j][i].updateTemp();
+            }
+        }
+        this.updateGlobalTemp();
     }
 
 

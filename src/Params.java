@@ -7,9 +7,14 @@ public class Params {
 
     // the initial percentage of white and black daisies
     // (sum should not be bigger than 1)
-    public final static double INI_PER_WHITE = 0.2;
-    public final static double INI_PER_BLACK = 0.2;
-    public final static double INI_PER_GREY = 0.2;
+    public final static double INI_PER_WHITE = 0.3;
+    public final static double INI_PER_BLACK = 0.3;
+    public final static double INI_PER_GREY = 0;
+
+    // the size of the board
+    public final static int BOARD_WIDTH = 35;
+    public final static int BOARD_HEIGHT = 35;
+
 
     // the life expectancy of a daisy
     public final static int MAX_AGE = 25;

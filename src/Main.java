@@ -11,7 +11,7 @@ public class Main {
         List<String[]> dataLines = new ArrayList<>();
 
         // initialize a board with patches of random daisies
-        Board board = new Board(5, 5);
+        Board board = new Board();
         board.initPatches();
 
         // build the head of the table
@@ -22,8 +22,11 @@ public class Main {
                 .append("Popularity of black daisy" + ",")
                 .append("Global temperature" + "\n");
 
+        sb = board.getData(sb);
+
+
         // adding data to the string
-        int totalTick = 10;
+        int totalTick = 200;
         for (int i = 0; i < totalTick; i++){
             board.updateBoard();
             sb = board.getData(sb);
